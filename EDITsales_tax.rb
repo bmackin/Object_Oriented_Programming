@@ -1,47 +1,40 @@
 class SalesTax
 	attr_accessor :qty, :name, :price
-	def initialize(qty, name, price)
+	attr_reader :tax_rate
+    def initialize(qty, name, price)
 		@qty = qty
 		@name = name
 		@price = price
 	end
-end
 
-
-class TaxExemptImport < SalesTax
+    class TaxOnly < SalesTax
         def calculate_sales_tax
-             (@price * 0.05).round(2)
+        (@price * tax_rate).round(2)
         end
         def calculate_total
-            (@price + calculate_sales_tax).round(2)
+        (@price + calculate_sales_tax).round(2)
+        end
+    end
+end
+
+class TaxExemptImport < SalesTax
+        def tax_rate
+            0.05
         end
 end
 
 class TaxExempt < SalesTax
-        def calculate_sales_tax
-            @price * 1
-        end
-        def calculate_total
-            @price.round(2)
+        def tax_rate
+            0
         end
 end
 
 class TaxAndDuty < SalesTax
-        def calculate_sales_tax
-            (@price * 0.15).round(2)
-        end
-        def calculate_total
-        	(@price + calculate_sales_tax).round(2)
+        def tax_rate
+            0.15
         end
 end
 
-class TaxOnly < SalesTax
-    	def calculate_sales_tax
-      	(@price * 0.10).round(2)
-    	end
-		def calculate_total
-        (@price + calculate_sales_tax).round(2)
-    	end
 end
 
 
